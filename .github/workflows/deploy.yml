@@ -1,0 +1,39 @@
+name: 🚀 Deploy to AWS Lightsail
+
+on:
+  push:
+    branches: [main] # Automatically runs when you push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Pull your repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup SSH agent (latest version)
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # 3️⃣ Add Lightsail server to known hosts
+      - name: Add Lightsail host to known_hosts
+        run: ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
+
+      # 4️⃣ (Optional) Test SSH connection before deploying
+      - name: 🔍 Test SSH Connection
+        run: |
+          echo "Testing SSH connection to Lightsail..."
+          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "echo ✅ SSH connection successful!"
+
+      # 5️⃣ Run your deployment script
+      - name: 🚀 Run deploy script on Lightsail
+        run: |
+          echo "Starting deployment on Lightsail..."
+          ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} \
+            'bash ~/deploy.sh'
+          echo "✅ Deployment complete!"
