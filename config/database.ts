@@ -14,8 +14,10 @@ const dbConfig = defineConfig({
         database: env.get('DB_DATABASE'),
       },
       pool: {
-        min: 2, // Minimum connections to keep alive
-        max: 20, // Maximum connections in pool (increase based on your load)
+        min: 0, // Minimum connections to keep alive
+        max: 5, // Maximum connections in pool (increase based on your load)
+        // min: 2, // Minimum connections to keep alive
+        // max: 20, // Maximum connections in pool (increase based on your load)
         acquireTimeoutMillis: 60000, // Wait 60s before timing out
         createTimeoutMillis: 30000, // 30s timeout for creating new connections
         idleTimeoutMillis: 30000, // Close idle connections after 30s
