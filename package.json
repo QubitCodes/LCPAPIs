@@ -15,8 +15,8 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
     "prepare": "husky",
-    "build_dev": "node ace build && node build/bin/server.js",
-    "build_prod": "node ace build && cp ./.env ./build/ && node build/bin/server.js"
+    "build_dev": "node build/bin/server.js",
+    "build_prod": "cp ./.env ./build/ && node build/bin/server.js"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
